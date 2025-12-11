@@ -342,21 +342,31 @@ export default function CouponSystem() {
 
   if (loading) {
     return (
-      <div className="min-h-screen" style={{
-        background: 'linear-gradient(to bottom right, #7c3aed, #9333ea, #4f46e5)',
-        padding: '1rem'
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}>
-        <div className="text-center">
-          <div className="relative">
-            <Loader className="animate-spin mx-auto mb-4" style={{color: 'white'}} size={64} />
-            <Sparkles className="absolute top-0 left-1/2" style={{
+        <div style={{textAlign: 'center'}}>
+          <div style={{position: 'relative', display: 'inline-block'}}>
+            <Loader style={{
+              color: 'white',
+              animation: 'spin 1s linear infinite',
+              marginBottom: '1rem'
+            }} size={64} />
+            <Sparkles style={{
+              position: 'absolute',
+              top: 0,
+              left: '50%',
               transform: 'translateX(-50%)',
               color: '#fcd34d',
               animation: 'pulse 2s infinite'
             }} size={24} />
           </div>
           <p style={{color: 'white', fontSize: '1.25rem', fontWeight: '600'}}>正在加载数据...</p>
-          <p style={{color: '#ddd6fe', fontSize: '0.875rem', marginTop: '0.5rem'}}>Firebase云端同步中</p>
+          <p style={{color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem', marginTop: '0.5rem'}}>Firebase云端同步中</p>
         </div>
       </div>
     );
@@ -365,11 +375,29 @@ export default function CouponSystem() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(to bottom right, #7c3aed, #9333ea, #4f46e5)',
-      padding: '2rem'
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+      padding: '1rem'
     }}>
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-white/20">
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+      <div style={{maxWidth: '1280px', margin: '0 auto'}}>
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '24px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          padding: '2rem',
+          marginBottom: '1.5rem',
+          border: '1px solid rgba(255, 255, 255, 0.2)'
+        }}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
             <div className="flex items-center gap-4">
               <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-3 rounded-2xl shadow-lg">
