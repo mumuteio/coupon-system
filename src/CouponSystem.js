@@ -3,7 +3,7 @@ import { database } from './firebaseConfig';
 import { ref, onValue, set } from 'firebase/database';
 
 import React, { useState, useEffect } from 'react';
-import { Download, Plus, Trash2, Search, Edit2, Save, X, ArrowUpDown, Send, RotateCcw, Wifi, WifiOff, Loader } from 'lucide-react';
+import { Download, Plus, Trash2, Search, Edit2, Save, X, ArrowUpDown, Send, RotateCcw, Wifi, WifiOff, Loader, Sparkles, TrendingUp } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 export default function CouponSystem() {
@@ -30,7 +30,6 @@ export default function CouponSystem() {
     remarks: ''
   });
 
-  // Firebase实时监听
   useEffect(() => {
     setLoading(true);
     
@@ -54,7 +53,6 @@ export default function CouponSystem() {
       setLoading(false);
     });
 
-    // 监听网络状态
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
     
@@ -68,7 +66,6 @@ export default function CouponSystem() {
     };
   }, []);
 
-  // 保存到Firebase
   const saveToFirebase = async (newCoupons) => {
     try {
       const couponsRef = ref(database, 'coupons');
@@ -345,229 +342,266 @@ export default function CouponSystem() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen" style={{
+        background: 'linear-gradient(to bottom right, #7c3aed, #9333ea, #4f46e5)',
+        padding: '1rem'
+      }}>
         <div className="text-center">
-          <Loader className="animate-spin mx-auto mb-4 text-blue-600" size={48} />
-          <p className="text-gray-600 text-lg">正在从Firebase加载数据...</p>
+          <div className="relative">
+            <Loader className="animate-spin mx-auto mb-4" style={{color: 'white'}} size={64} />
+            <Sparkles className="absolute top-0 left-1/2" style={{
+              transform: 'translateX(-50%)',
+              color: '#fcd34d',
+              animation: 'pulse 2s infinite'
+            }} size={24} />
+          </div>
+          <p style={{color: 'white', fontSize: '1.25rem', fontWeight: '600'}}>正在加载数据...</p>
+          <p style={{color: '#ddd6fe', fontSize: '0.875rem', marginTop: '0.5rem'}}>Firebase云端同步中</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(to bottom right, #7c3aed, #9333ea, #4f46e5)',
+      padding: '2rem'
+    }}>
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-800">
-              优惠券发放管理系统
-            </h1>
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-white/20">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div className="flex items-center gap-4">
+              <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-3 rounded-2xl shadow-lg">
+                <Sparkles className="text-white" size={32} />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-white">
+                  优惠券管理系统
+                </h1>
+                <p className="text-purple-200 text-sm mt-1">实时云端同步 · 多人协作</p>
+              </div>
+            </div>
             <div className="flex items-center gap-3">
               {isOnline ? (
-                <div className="flex items-center gap-2 text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                <div className="flex items-center gap-2 bg-green-500/20 backdrop-blur-sm border border-green-400/30 text-green-100 px-4 py-2 rounded-full shadow-lg">
                   <Wifi size={18} />
-                  <span className="text-sm font-medium">Firebase在线</span>
+                  <span className="text-sm font-medium">在线同步</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 text-red-600 bg-red-50 px-3 py-1 rounded-full">
+                <div className="flex items-center gap-2 bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-red-100 px-4 py-2 rounded-full shadow-lg">
                   <WifiOff size={18} />
-                  <span className="text-sm font-medium">网络离线</span>
+                  <span className="text-sm font-medium">离线模式</span>
                 </div>
               )}
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex justify-between items-center">
+            <div className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 text-red-100 px-4 py-3 rounded-2xl mb-6 flex justify-between items-center">
               <span>{error}</span>
-              <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
+              <button onClick={() => setError(null)} className="text-red-200 hover:text-white transition-colors">
                 <X size={18} />
               </button>
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <div className="text-sm text-blue-600 font-medium">总记录数</div>
-              <div className="text-2xl font-bold text-blue-700">{coupons.length}</div>
-            </div>
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <div className="text-sm text-yellow-600 font-medium">已发放未使用</div>
-              <div className="text-2xl font-bold text-yellow-700">{issuedCoupons.length}</div>
-            </div>
-            <div className="bg-green-50 p-4 rounded-lg">
-              <div className="text-sm text-green-600 font-medium">可发放优惠券</div>
-              <div className="text-2xl font-bold text-green-700">{availableCoupons.length}</div>
-            </div>
-            <div className="bg-purple-50 p-4 rounded-lg">
-              <div className="text-sm text-purple-600 font-medium">已回收次数</div>
-              <div className="text-2xl font-bold text-purple-700">{coupons.filter(c => c.redeemDate).length}</div>
-            </div>
-          </div>
-
-          <div className="bg-green-50 border-2 border-green-300 rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
-              <Send size={24} />
-              快捷发放优惠券
-            </h2>
-            {availableCoupons.length > 0 ? (
-              <>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    选择可发放的优惠券
-                  </label>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {availableCoupons.map(code => (
-                      <button
-                        key={code}
-                        onClick={() => setSelectedCoupon(code)}
-                        className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                          selectedCoupon === code
-                            ? 'bg-green-600 text-white shadow-lg scale-105'
-                            : 'bg-green-200 text-green-800 hover:bg-green-300'
-                        }`}
-                      >
-                        {code}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {selectedCoupon && (
-                  <div className="bg-white p-4 rounded-lg border-2 border-green-400">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          已选优惠券
-                        </label>
-                        <input
-                          type="text"
-                          value={selectedCoupon}
-                          disabled
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 font-bold"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          发放日期 *
-                        </label>
-                        <input
-                          type="date"
-                          value={issueFormData.issueDate}
-                          onChange={(e) => setIssueFormData({...issueFormData, issueDate: e.target.value})}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          备注
-                        </label>
-                        <input
-                          type="text"
-                          value={issueFormData.remarks}
-                          onChange={(e) => setIssueFormData({...issueFormData, remarks: e.target.value})}
-                          placeholder="姓名、电话等"
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                        />
-                      </div>
-                    </div>
-                    <button
-                      onClick={handleQuickIssue}
-                      disabled={!isOnline}
-                      className="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    >
-                      <Send size={20} />
-                      确认发放
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center text-gray-500 py-4">
-                暂无可发放的优惠券（所有优惠券都在外流通中）
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-5 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300">
+              <div className="flex justify-between items-start mb-3">
+                <div className="text-blue-100 text-sm font-medium">总记录</div>
+                <TrendingUp className="text-blue-200" size={20} />
               </div>
-            )}
+              <div className="text-4xl font-bold text-white">{coupons.length}</div>
+            </div>
+            <div className="bg-gradient-to-br from-yellow-500 to-orange-600 p-5 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300">
+              <div className="flex justify-between items-start mb-3">
+                <div className="text-yellow-100 text-sm font-medium">流通中</div>
+                <Send className="text-yellow-200" size={20} />
+              </div>
+              <div className="text-4xl font-bold text-white">{issuedCoupons.length}</div>
+            </div>
+            <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-5 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300">
+              <div className="flex justify-between items-start mb-3">
+                <div className="text-green-100 text-sm font-medium">可发放</div>
+                <Sparkles className="text-green-200" size={20} />
+              </div>
+              <div className="text-4xl font-bold text-white">{availableCoupons.length}</div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-5 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300">
+              <div className="flex justify-between items-start mb-3">
+                <div className="text-purple-100 text-sm font-medium">已回收</div>
+                <RotateCcw className="text-purple-200" size={20} />
+              </div>
+              <div className="text-4xl font-bold text-white">{coupons.filter(c => c.redeemDate).length}</div>
+            </div>
           </div>
+        </div>
 
-          {issuedCoupons.length > 0 && (
-            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-bold text-yellow-800 mb-4 flex items-center gap-2">
-                <RotateCcw size={24} />
-                快捷回收优惠券
-              </h2>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  已发放未使用的优惠券（点击回收）
+        <div className="bg-gradient-to-br from-green-500/20 to-emerald-600/20 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-green-400/30">
+          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <div className="bg-green-500 p-2 rounded-xl">
+              <Send size={24} className="text-white" />
+            </div>
+            快捷发放优惠券
+          </h2>
+          {availableCoupons.length > 0 ? (
+            <>
+              <div className="mb-6">
+                <label className="block text-green-100 text-sm font-medium mb-3">
+                  选择可发放的优惠券
                 </label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      使用日期 *
-                    </label>
-                    <input
-                      type="date"
-                      value={redeemFormData.redeemDate}
-                      onChange={(e) => setRedeemFormData({...redeemFormData, redeemDate: e.target.value})}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      备注（可选）
-                    </label>
-                    <input
-                      type="text"
-                      value={redeemFormData.remarks}
-                      onChange={(e) => setRedeemFormData({...redeemFormData, remarks: e.target.value})}
-                      placeholder="补充备注信息"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {issuedCoupons.map(code => (
+                <div className="flex flex-wrap gap-3">
+                  {availableCoupons.map(code => (
                     <button
                       key={code}
-                      onClick={() => handleQuickRedeem(code)}
-                      disabled={!isOnline}
-                      className="bg-yellow-200 text-yellow-800 px-4 py-2 rounded-lg font-medium hover:bg-yellow-300 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                      onClick={() => setSelectedCoupon(code)}
+                      className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                        selectedCoupon === code
+                          ? 'bg-white text-green-600 shadow-2xl scale-110'
+                          : 'bg-green-500/30 backdrop-blur-sm text-white hover:bg-green-500/50 border border-green-400/30'
+                      }`}
                     >
-                      <RotateCcw size={16} />
                       {code}
                     </button>
                   ))}
                 </div>
               </div>
+
+              {selectedCoupon && (
+                <div className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                      <label className="block text-white text-sm font-medium mb-2">
+                        已选优惠券
+                      </label>
+                      <input
+                        type="text"
+                        value={selectedCoupon}
+                        disabled
+                        className="w-full px-4 py-3 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white font-bold"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium mb-2">
+                        发放日期 *
+                      </label>
+                      <input
+                        type="date"
+                        value={issueFormData.issueDate}
+                        onChange={(e) => setIssueFormData({...issueFormData, issueDate: e.target.value})}
+                        className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-green-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-white text-sm font-medium mb-2">
+                        备注信息
+                      </label>
+                      <input
+                        type="text"
+                        value={issueFormData.remarks}
+                        onChange={(e) => setIssueFormData({...issueFormData, remarks: e.target.value})}
+                        placeholder="姓名、电话等"
+                        className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-green-400"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleQuickIssue}
+                    disabled={!isOnline}
+                    className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-4 rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all font-semibold text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl"
+                  >
+                    <Send size={20} />
+                    确认发放优惠券
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center text-green-100 py-8 bg-white/5 rounded-2xl">
+              <p className="text-lg">暂无可发放的优惠券</p>
+              <p className="text-sm text-green-200 mt-2">所有优惠券都在外流通中</p>
             </div>
           )}
+        </div>
 
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
-            <div className="relative w-full sm:w-96">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        {issuedCoupons.length > 0 && (
+          <div className="bg-gradient-to-br from-yellow-500/20 to-orange-600/20 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-yellow-400/30">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <div className="bg-yellow-500 p-2 rounded-xl">
+                <RotateCcw size={24} className="text-white" />
+              </div>
+              快捷回收优惠券
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block text-white text-sm font-medium mb-2">
+                  使用日期 *
+                </label>
+                <input
+                  type="date"
+                  value={redeemFormData.redeemDate}
+                  onChange={(e) => setRedeemFormData({...redeemFormData, redeemDate: e.target.value})}
+                  className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
+              <div>
+                <label className="block text-white text-sm font-medium mb-2">
+                  备注信息（可选）
+                </label>
+                <input
+                  type="text"
+                  value={redeemFormData.remarks}
+                  onChange={(e) => setRedeemFormData({...redeemFormData, remarks: e.target.value})}
+                  placeholder="补充备注"
+                  className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-yellow-400"
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {issuedCoupons.map(code => (
+                <button
+                  key={code}
+                  onClick={() => handleQuickRedeem(code)}
+                  disabled={!isOnline}
+                  className="bg-white/20 backdrop-blur-sm border border-yellow-400/30 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <RotateCcw size={16} />
+                  {code}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 border border-white/20">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div className="relative w-full md:w-96">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-300" size={20} />
               <input
                 type="text"
                 placeholder="搜索优惠券编号或备注..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-12 pr-4 py-3 bg-white/90 rounded-xl border-0 focus:ring-2 focus:ring-purple-400 text-gray-800"
               />
             </div>
 
             <button
               onClick={exportToExcel}
-              className="flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors w-full sm:w-auto"
+              className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all font-semibold shadow-xl w-full md:w-auto"
             >
               <Download size={18} />
-              导出到Excel
+              导出Excel
             </button>
           </div>
 
-          <div className="overflow-x-auto mb-8">
+          <div className="overflow-x-auto rounded-2xl">
             <table className="w-full">
-              <thead className="bg-gray-100">
+              <thead className="bg-white/20 backdrop-blur-sm">
                 <tr>
                   <th 
-                    className="px-4 py-3 text-left text-sm font-semibold text-gray-700 cursor-pointer hover:bg-gray-200"
+                    className="px-6 py-4 text-left text-sm font-semibold text-white cursor-pointer hover:bg-white/30 transition-colors"
                     onClick={() => handleSort('couponCode')}
                   >
                     <div className="flex items-center gap-2">
@@ -576,7 +610,7 @@ export default function CouponSystem() {
                     </div>
                   </th>
                   <th 
-                    className="px-4 py-3 text-left text-sm font-semibold text-gray-700 cursor-pointer hover:bg-gray-200"
+                    className="px-6 py-4 text-left text-sm font-semibold text-white cursor-pointer hover:bg-white/30 transition-colors"
                     onClick={() => handleSort('issueDate')}
                   >
                     <div className="flex items-center gap-2">
@@ -585,7 +619,7 @@ export default function CouponSystem() {
                     </div>
                   </th>
                   <th 
-                    className="px-4 py-3 text-left text-sm font-semibold text-gray-700 cursor-pointer hover:bg-gray-200"
+                    className="px-6 py-4 text-left text-sm font-semibold text-white cursor-pointer hover:bg-white/30 transition-colors"
                     onClick={() => handleSort('redeemDate')}
                   >
                     <div className="flex items-center gap-2">
@@ -593,35 +627,40 @@ export default function CouponSystem() {
                       <ArrowUpDown size={16} />
                     </div>
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">状态</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">备注</th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">操作</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-white">状态</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-white">备注</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-white">操作</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-white/10">
                 {sortedCoupons.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="px-4 py-8 text-center text-gray-500">
-                      暂无数据，请添加优惠券记录
+                    <td colSpan="6" className="px-6 py-12 text-center text-purple-200">
+                      <p className="text-lg">暂无数据</p>
+                      <p className="text-sm mt-2">请添加优惠券记录</p>
                     </td>
                   </tr>
                 ) : (
                   sortedCoupons.map((coupon) => (
-                    <tr key={coupon.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{coupon.couponCode}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">{coupon.issueDate}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">{coupon.redeemDate || '-'}</td>
-                      <td className="px-4 py-3 text-sm">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${coupon.redeemDate ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                          {coupon.redeemDate ? '已使用' : '未使用'}
+                    <tr key={coupon.id} className="hover:bg-white/10 transition-colors">
+                      <td className="px-6 py-4 text-sm font-semibold text-white">{coupon.couponCode}</td>
+                      <td className="px-6 py-4 text-sm text-purple-100">{coupon.issueDate}</td>
+                      <td className="px-6 py-4 text-sm text-purple-100">{coupon.redeemDate || '-'}</td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          coupon.redeemDate 
+                            ? 'bg-green-500/30 text-green-100 border border-green-400/50' 
+                            : 'bg-yellow-500/30 text-yellow-100 border border-yellow-400/50'
+                        }`}>
+                          {coupon.redeemDate ? '已使用' : '流通中'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">{coupon.remarks || '-'}</td>
-                      <td className="px-4 py-3 text-sm">
+                      <td className="px-6 py-4 text-sm text-purple-100">{coupon.remarks || '-'}</td>
+                      <td className="px-6 py-4 text-sm">
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleEdit(coupon)}
-                            className="text-blue-600 hover:text-blue-800 p-1"
+                            className="bg-blue-500/30 backdrop-blur-sm border border-blue-400/50 text-blue-100 hover:bg-blue-500/50 p-2 rounded-lg transition-all"
                             title="编辑"
                           >
                             <Edit2 size={18} />
@@ -629,7 +668,7 @@ export default function CouponSystem() {
                           <button
                             onClick={() => handleDelete(coupon.id)}
                             disabled={!isOnline}
-                            className="text-red-600 hover:text-red-800 p-1 disabled:text-gray-400 disabled:cursor-not-allowed"
+                            className="bg-red-500/30 backdrop-blur-sm border border-red-400/50 text-red-100 hover:bg-red-500/50 p-2 rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                             title="删除"
                           >
                             <Trash2 size={18} />
@@ -642,95 +681,106 @@ export default function CouponSystem() {
               </tbody>
             </table>
           </div>
+        </div>
 
-          <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">手动录入优惠券记录</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  优惠券编号 *
-                </label>
-                <input
-                  type="text"
-                  name="couponCode"
-                  value={formData.couponCode}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="输入优惠券编号"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  发放日期 *
-                </label>
-                <input
-                  type="date"
-                  name="issueDate"
-                  value={formData.issueDate}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  使用日期
-                </label>
-                <input
-                  type="date"
-                  name="redeemDate"
-                  value={formData.redeemDate}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  备注
-                </label>
-                <input
-                  type="text"
-                  name="remarks"
-                  value={formData.remarks}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="可输入姓名、电话等信息"
-                />
-              </div>
+        <div className="bg-gradient-to-br from-purple-500/20 to-pink-600/20 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mt-6 border border-purple-400/30">
+          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <div className="bg-purple-500 p-2 rounded-xl">
+              <Plus size={24} className="text-white" />
+            </div>
+            手动录入优惠券记录
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">
+                优惠券编号 *
+              </label>
+              <input
+                type="text"
+                name="couponCode"
+                value={formData.couponCode}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-purple-400"
+                placeholder="输入优惠券编号"
+              />
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={handleSubmit}
-                disabled={!isOnline}
-                className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                {editingId ? (
-                  <>
-                    <Save size={18} />
-                    更新记录
-                  </>
-                ) : (
-                  <>
-                    <Plus size={18} />
-                    添加记录
-                  </>
-                )}
-              </button>
-              
-              {editingId && (
-                <button
-                  onClick={handleCancelEdit}
-                  className="flex items-center gap-2 bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
-                >
-                  <X size={18} />
-                  取消
-                </button>
-              )}
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">
+                发放日期 *
+              </label>
+              <input
+                type="date"
+                name="issueDate"
+                value={formData.issueDate}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-purple-400"
+              />
+            </div>
+
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">
+                使用日期
+              </label>
+              <input
+                type="date"
+                name="redeemDate"
+                value={formData.redeemDate}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-purple-400"
+              />
+            </div>
+
+            <div>
+              <label className="block text-white text-sm font-medium mb-2">
+                备注信息
+              </label>
+              <input
+                type="text"
+                name="remarks"
+                value={formData.remarks}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/90 border-0 focus:ring-2 focus:ring-purple-400"
+                placeholder="姓名、电话等"
+              />
             </div>
           </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={handleSubmit}
+              disabled={!isOnline}
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all font-semibold shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {editingId ? (
+                <>
+                  <Save size={18} />
+                  更新记录
+                </>
+              ) : (
+                <>
+                  <Plus size={18} />
+                  添加记录
+                </>
+              )}
+            </button>
+            
+            {editingId && (
+              <button
+                onClick={handleCancelEdit}
+                className="flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white px-8 py-3 rounded-xl hover:bg-white/30 transition-all font-semibold"
+              >
+                <X size={18} />
+                取消
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-6 bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 text-center">
+          <p className="text-purple-200 text-sm">
+            ✨ 数据实时同步到Firebase云端 · 支持多人协作 · 安全可靠
+          </p>
         </div>
       </div>
     </div>
