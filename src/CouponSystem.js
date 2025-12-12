@@ -438,13 +438,16 @@ export default function CouponSystem() {
           </div>
         </div>
 
+        {/* 分隔线 */}
+        <div className="h-8"></div>
+
         {/* 快捷发放模块 - 翠绿色 */}
-        <div className="bg-gradient-to-br from-emerald-400/30 to-green-500/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-10 border-2 border-emerald-300/50" style={{boxShadow: '0 8px 32px rgba(16, 185, 129, 0.3)'}}>
-          <h2 className="text-4xl font-extrabold text-white mb-8 flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
-            <div className="bg-gradient-to-br from-emerald-400 to-green-600 p-4 rounded-2xl shadow-xl">
-              <Send size={32} className="text-white" />
+        <div className="bg-gradient-to-br from-emerald-300/40 to-green-400/40 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-16 border-4 border-emerald-200/60" style={{boxShadow: '0 12px 40px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255,255,255,0.2)'}}>
+          <h2 className="text-5xl font-black text-white mb-10 flex items-center gap-5" style={{textShadow: '3px 3px 6px rgba(0,0,0,0.4)'}}>
+            <div className="bg-gradient-to-br from-emerald-300 to-green-500 p-5 rounded-3xl shadow-2xl ring-4 ring-white/30">
+              <Send size={40} className="text-white" />
             </div>
-            <span>快捷发放优惠券</span>
+            <span className="tracking-tight">快捷发放优惠券</span>
           </h2>
           {availableCoupons.length > 0 ? (
             <>
@@ -526,14 +529,17 @@ export default function CouponSystem() {
           )}
         </div>
 
+        {/* 分隔线 */}
+        <div className="h-8"></div>
+
         {/* 快捷回收模块 - 琥珀橙色 */}
         {issuedCoupons.length > 0 && (
-          <div className="bg-gradient-to-br from-amber-400/30 to-orange-500/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-10 border-2 border-amber-300/50" style={{boxShadow: '0 8px 32px rgba(251, 191, 36, 0.3)'}}>
-            <h2 className="text-4xl font-extrabold text-white mb-8 flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
-              <div className="bg-gradient-to-br from-amber-400 to-orange-600 p-4 rounded-2xl shadow-xl">
-                <RotateCcw size={32} className="text-white" />
+          <div className="bg-gradient-to-br from-amber-300/40 to-orange-400/40 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-16 border-4 border-amber-200/60" style={{boxShadow: '0 12px 40px rgba(251, 191, 36, 0.5), inset 0 1px 0 rgba(255,255,255,0.2)'}}>
+            <h2 className="text-5xl font-black text-white mb-10 flex items-center gap-5" style={{textShadow: '3px 3px 6px rgba(0,0,0,0.4)'}}>
+              <div className="bg-gradient-to-br from-amber-300 to-orange-500 p-5 rounded-3xl shadow-2xl ring-4 ring-white/30">
+                <RotateCcw size={40} className="text-white" />
               </div>
-              <span>快捷回收优惠券</span>
+              <span className="tracking-tight">快捷回收优惠券</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -576,14 +582,17 @@ export default function CouponSystem() {
           </div>
         )}
 
+        {/* 分隔线 */}
+        <div className="h-8"></div>
+
         {/* 数据列表模块 - 白色半透明 */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-10 border-2 border-white/30" style={{boxShadow: '0 8px 32px rgba(255, 255, 255, 0.2)'}}>
+        <div className="bg-white/15 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-16 border-4 border-white/40" style={{boxShadow: '0 12px 40px rgba(255, 255, 255, 0.3), inset 0 1px 0 rgba(255,255,255,0.3)'}}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-            <h2 className="text-4xl font-extrabold text-white flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
-              <div className="bg-gradient-to-br from-blue-400 to-indigo-600 p-4 rounded-2xl shadow-xl">
-                <Search size={32} className="text-white" />
+            <h2 className="text-5xl font-black text-white flex items-center gap-5" style={{textShadow: '3px 3px 6px rgba(0,0,0,0.4)'}}>
+              <div className="bg-gradient-to-br from-blue-300 to-indigo-500 p-5 rounded-3xl shadow-2xl ring-4 ring-white/30">
+                <Search size={40} className="text-white" />
               </div>
-              <span>优惠券记录列表</span>
+              <span className="tracking-tight">优惠券记录列表</span>
             </h2>
             <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
               <div className="relative w-full md:w-96">
@@ -694,13 +703,16 @@ export default function CouponSystem() {
           </div>
         </div>
 
+        {/* 分隔线 */}
+        <div className="h-8"></div>
+
         {/* 手动录入模块 - 紫红色 */}
-        <div className="bg-gradient-to-br from-fuchsia-400/30 to-pink-500/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mt-10 border-2 border-fuchsia-300/50" style={{boxShadow: '0 8px 32px rgba(232, 121, 249, 0.3)'}}>
-          <h2 className="text-4xl font-extrabold text-white mb-8 flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
-            <div className="bg-gradient-to-br from-fuchsia-400 to-pink-600 p-4 rounded-2xl shadow-xl">
-              <Plus size={32} className="text-white" />
+        <div className="bg-gradient-to-br from-fuchsia-300/40 to-pink-400/40 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mt-16 border-4 border-fuchsia-200/60" style={{boxShadow: '0 12px 40px rgba(232, 121, 249, 0.5), inset 0 1px 0 rgba(255,255,255,0.2)'}}>
+          <h2 className="text-5xl font-black text-white mb-10 flex items-center gap-5" style={{textShadow: '3px 3px 6px rgba(0,0,0,0.4)'}}>
+            <div className="bg-gradient-to-br from-fuchsia-300 to-pink-500 p-5 rounded-3xl shadow-2xl ring-4 ring-white/30">
+              <Plus size={40} className="text-white" />
             </div>
-            <span>手动录入优惠券记录</span>
+            <span className="tracking-tight">手动录入优惠券记录</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div>
