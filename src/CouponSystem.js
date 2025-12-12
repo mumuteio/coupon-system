@@ -342,31 +342,21 @@ export default function CouponSystem() {
 
   if (loading) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+      <div className="min-h-screen" style={{
+        background: 'linear-gradient(to bottom right, #7c3aed, #9333ea, #4f46e5)',
+        padding: '1rem'
       }}>
-        <div style={{textAlign: 'center'}}>
-          <div style={{position: 'relative', display: 'inline-block'}}>
-            <Loader style={{
-              color: 'white',
-              animation: 'spin 1s linear infinite',
-              marginBottom: '1rem'
-            }} size={64} />
-            <Sparkles style={{
-              position: 'absolute',
-              top: 0,
-              left: '50%',
+        <div className="text-center">
+          <div className="relative">
+            <Loader className="animate-spin mx-auto mb-4" style={{color: 'white'}} size={64} />
+            <Sparkles className="absolute top-0 left-1/2" style={{
               transform: 'translateX(-50%)',
               color: '#fcd34d',
               animation: 'pulse 2s infinite'
             }} size={24} />
           </div>
           <p style={{color: 'white', fontSize: '1.25rem', fontWeight: '600'}}>正在加载数据...</p>
-          <p style={{color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem', marginTop: '0.5rem'}}>Firebase云端同步中</p>
+          <p style={{color: '#ddd6fe', fontSize: '0.875rem', marginTop: '0.5rem'}}>Firebase云端同步中</p>
         </div>
       </div>
     );
@@ -375,29 +365,11 @@ export default function CouponSystem() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-      padding: '1rem'
+      background: 'linear-gradient(to bottom right, #7c3aed, #9333ea, #4f46e5)',
+      padding: '2rem'
     }}>
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-      <div style={{maxWidth: '1280px', margin: '0 auto'}}>
-        <div style={{
-          background: 'rgba(255, 255, 255, 0.15)',
-          backdropFilter: 'blur(20px)',
-          borderRadius: '24px',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-          padding: '2rem',
-          marginBottom: '1.5rem',
-          border: '1px solid rgba(255, 255, 255, 0.2)'
-        }}>
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-white/20">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
             <div className="flex items-center gap-4">
               <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-3 rounded-2xl shadow-lg">
@@ -466,17 +438,18 @@ export default function CouponSystem() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500/20 to-emerald-600/20 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-green-400/30">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <div className="bg-green-500 p-2 rounded-xl">
-              <Send size={24} className="text-white" />
+        {/* 快捷发放模块 - 翠绿色 */}
+        <div className="bg-gradient-to-br from-emerald-400/30 to-green-500/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-10 border-2 border-emerald-300/50" style={{boxShadow: '0 8px 32px rgba(16, 185, 129, 0.3)'}}>
+          <h2 className="text-4xl font-extrabold text-white mb-8 flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
+            <div className="bg-gradient-to-br from-emerald-400 to-green-600 p-4 rounded-2xl shadow-xl">
+              <Send size={32} className="text-white" />
             </div>
-            快捷发放优惠券
+            <span>快捷发放优惠券</span>
           </h2>
           {availableCoupons.length > 0 ? (
             <>
               <div className="mb-6">
-                <label className="block text-green-100 text-sm font-medium mb-3">
+                <label className="block text-green-100 text-base font-semibold mb-3">
                   选择可发放的优惠券
                 </label>
                 <div className="flex flex-wrap gap-3">
@@ -498,9 +471,9 @@ export default function CouponSystem() {
 
               {selectedCoupon && (
                 <div className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div>
-                      <label className="block text-white text-sm font-medium mb-2">
+                      <label className="block text-white text-base font-semibold mb-2">
                         已选优惠券
                       </label>
                       <input
@@ -511,7 +484,7 @@ export default function CouponSystem() {
                       />
                     </div>
                     <div>
-                      <label className="block text-white text-sm font-medium mb-2">
+                      <label className="block text-white text-base font-semibold mb-2">
                         发放日期 *
                       </label>
                       <input
@@ -522,7 +495,7 @@ export default function CouponSystem() {
                       />
                     </div>
                     <div>
-                      <label className="block text-white text-sm font-medium mb-2">
+                      <label className="block text-white text-base font-semibold mb-2">
                         备注信息
                       </label>
                       <input
@@ -553,17 +526,18 @@ export default function CouponSystem() {
           )}
         </div>
 
+        {/* 快捷回收模块 - 琥珀橙色 */}
         {issuedCoupons.length > 0 && (
-          <div className="bg-gradient-to-br from-yellow-500/20 to-orange-600/20 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-yellow-400/30">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-              <div className="bg-yellow-500 p-2 rounded-xl">
-                <RotateCcw size={24} className="text-white" />
+          <div className="bg-gradient-to-br from-amber-400/30 to-orange-500/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-10 border-2 border-amber-300/50" style={{boxShadow: '0 8px 32px rgba(251, 191, 36, 0.3)'}}>
+            <h2 className="text-4xl font-extrabold text-white mb-8 flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
+              <div className="bg-gradient-to-br from-amber-400 to-orange-600 p-4 rounded-2xl shadow-xl">
+                <RotateCcw size={32} className="text-white" />
               </div>
-              快捷回收优惠券
+              <span>快捷回收优惠券</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-white text-sm font-medium mb-2">
+                <label className="block text-white text-base font-semibold mb-2">
                   使用日期 *
                 </label>
                 <input
@@ -574,7 +548,7 @@ export default function CouponSystem() {
                 />
               </div>
               <div>
-                <label className="block text-white text-sm font-medium mb-2">
+                <label className="block text-white text-base font-semibold mb-2">
                   备注信息（可选）
                 </label>
                 <input
@@ -602,26 +576,35 @@ export default function CouponSystem() {
           </div>
         )}
 
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 border border-white/20">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-300" size={20} />
-              <input
-                type="text"
-                placeholder="搜索优惠券编号或备注..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white/90 rounded-xl border-0 focus:ring-2 focus:ring-purple-400 text-gray-800"
-              />
-            </div>
+        {/* 数据列表模块 - 白色半透明 */}
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mb-10 border-2 border-white/30" style={{boxShadow: '0 8px 32px rgba(255, 255, 255, 0.2)'}}>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+            <h2 className="text-4xl font-extrabold text-white flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
+              <div className="bg-gradient-to-br from-blue-400 to-indigo-600 p-4 rounded-2xl shadow-xl">
+                <Search size={32} className="text-white" />
+              </div>
+              <span>优惠券记录列表</span>
+            </h2>
+            <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+              <div className="relative w-full md:w-96">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-300" size={20} />
+                <input
+                  type="text"
+                  placeholder="搜索优惠券编号或备注..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-white/90 rounded-xl border-0 focus:ring-2 focus:ring-purple-400 text-gray-800"
+                />
+              </div>
 
-            <button
-              onClick={exportToExcel}
-              className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all font-semibold shadow-xl w-full md:w-auto"
-            >
-              <Download size={18} />
-              导出Excel
-            </button>
+              <button
+                onClick={exportToExcel}
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all font-semibold shadow-xl"
+              >
+                <Download size={18} />
+                导出Excel
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto rounded-2xl">
@@ -711,16 +694,17 @@ export default function CouponSystem() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500/20 to-pink-600/20 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mt-6 border border-purple-400/30">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <div className="bg-purple-500 p-2 rounded-xl">
-              <Plus size={24} className="text-white" />
+        {/* 手动录入模块 - 紫红色 */}
+        <div className="bg-gradient-to-br from-fuchsia-400/30 to-pink-500/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 mt-10 border-2 border-fuchsia-300/50" style={{boxShadow: '0 8px 32px rgba(232, 121, 249, 0.3)'}}>
+          <h2 className="text-4xl font-extrabold text-white mb-8 flex items-center gap-4" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.3)'}}>
+            <div className="bg-gradient-to-br from-fuchsia-400 to-pink-600 p-4 rounded-2xl shadow-xl">
+              <Plus size={32} className="text-white" />
             </div>
-            手动录入优惠券记录
+            <span>手动录入优惠券记录</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div>
-              <label className="block text-white text-sm font-medium mb-2">
+              <label className="block text-white text-base font-semibold mb-2">
                 优惠券编号 *
               </label>
               <input
@@ -734,7 +718,7 @@ export default function CouponSystem() {
             </div>
 
             <div>
-              <label className="block text-white text-sm font-medium mb-2">
+              <label className="block text-white text-base font-semibold mb-2">
                 发放日期 *
               </label>
               <input
@@ -747,7 +731,7 @@ export default function CouponSystem() {
             </div>
 
             <div>
-              <label className="block text-white text-sm font-medium mb-2">
+              <label className="block text-white text-base font-semibold mb-2">
                 使用日期
               </label>
               <input
@@ -760,7 +744,7 @@ export default function CouponSystem() {
             </div>
 
             <div>
-              <label className="block text-white text-sm font-medium mb-2">
+              <label className="block text-white text-base font-semibold mb-2">
                 备注信息
               </label>
               <input
